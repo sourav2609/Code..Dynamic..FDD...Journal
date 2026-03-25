@@ -1,0 +1,41 @@
+Iteration 1/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=153.10 deg, el=46.12 deg, heading=274.36 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 2/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=247.81 deg, el=54.71 deg, heading=349.53 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 3/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=271.53 deg, el=58.77 deg, heading=257.45 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 4/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=187.05 deg, el=53.83 deg, heading=287.67 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 5/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=155.62 deg, el=67.19 deg, heading=71.39 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 6/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=248.15 deg, el=34.44 deg, heading=128.14 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 7/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=230.88 deg, el=79.79 deg, heading=29.63 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 8/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=131.26 deg, el=36.67 deg, heading=323.40 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 9/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=322.47 deg, el=73.80 deg, heading=50.73 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Iteration 10/10
+Generated 1 synthetic satellite instances with azimuth range (0.0, 360.0) deg and elevation range (30.0, 80.0) deg
+SAT-1: az=184.84 deg, el=33.37 deg, heading=99.38 deg
+Satellite instances saved to Data/experiments/J_01_K_010/runtime/chunk_001_satellites.json
+Saved chunk results to Data/experiments/J_01_K_010/chunks/chunk_001.json

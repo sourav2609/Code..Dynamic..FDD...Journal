@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "numSat": 2,
+    "numUE": 10,
+    "nIter": 10,
+    "chunkId": 4,
+    "seed": 500400,
+    "freqs": [
+      2400000000.0,
+      1600000000.0
+    ],
+    "bandwidths": [
+      10000000.0,
+      10000000.0
+    ],
+    "satAntennas": [
+      8,
+      8
+    ],
+    "ueAntennas": 1,
+    "satMaxPow": 20.0,
+    "ueMaxPow": 2.0,
+    "radiusKm": 10,
+    "hsatKm": 500.0,
+    "centralLat": 53.0793,
+    "centralLon": 8.8017,
+    "startDate": "2025-01-01",
+    "azimuthRangeDeg": [
+      0.0,
+      360.0
+    ],
+    "elevationRangeDeg": [
+      30.0,
+      80.0
+    ]
+  },
+  "status": "running",
+  "completed_iterations": 6,
+  "target_iterations": 10,
+  "iteration_results": [
+    {
+      "iteration": 1,
+      "with_spin": 25.870233041403875,
+      "without_spin": 25.491046500565453
+    },
+    {
+      "iteration": 2,
+      "with_spin": 21.27141607307939,
+      "without_spin": 18.023278880462883
+    },
+    {
+      "iteration": 3,
+      "with_spin": 26.079526414109726,
+      "without_spin": 26.079526414109726
+    },
+    {
+      "iteration": 4,
+      "with_spin": 22.048037887557427,
+      "without_spin": 20.153528058256203
+    },
+    {
+      "iteration": 5,
+      "with_spin": 20.720534717814992,
+      "without_spin": 20.720534717814992
+    },
+    {
+      "iteration": 6,
+      "with_spin": 24.869521387183752,
+      "without_spin": 23.918027263549174
+    }
+  ],
+  "results_with_spin": [
+    25.870233041403875,
+    21.27141607307939,
+    26.079526414109726,
+    22.048037887557427,
+    20.720534717814992,
+    24.869521387183752
+  ],
+  "results_without_spin": [
+    25.491046500565453,
+    18.023278880462883,
+    26.079526414109726,
+    20.153528058256203,
+    20.720534717814992,
+    23.918027263549174
+  ]
+}

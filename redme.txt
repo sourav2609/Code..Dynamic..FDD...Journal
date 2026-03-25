@@ -1,0 +1,74 @@
+Author:  
+
+Sourav Mukherjee
+PhD student
+Room - N2410
+University of Bremen
+Dept. of Communications Engineering (Arbeitsbereichs Nachrichtentechnik)
+Otto-Hahn-Allee NW1
+D-28359 Bremen - Germany
+Email: mukherjee@ant.uni-bremen.de 
+
+Paper:   Spinning Frequency Bands
+                                            
+! Tips:
+
+Required package: Skyfield, numpy, matplotlib, 
+Running script:
+    write in command line -->  python3 main.py
+
+For using 'iridium' satellites just change 'iridium.txt' in def satSelection by going in "root/utilis/network.py"
+
+
+-----------------------Code Stucture-----------------------------
+-----------------------------------------------------------------
+
+root/
+|-- utilis/
+|   |-- __init__.py
+|
+|   |-- starlink.txt
+|   |-- iridium.txt
+|
+|   |--  components.py
+|           class UE:
+|           class Satellite:
+|
+|   |-- network.py
+|           class Network:
+|               parameters: numSat, numUE, central_loc, radius_km, time, UEs, satellites
+|               |- def generateLayout()
+|               |- def generateRandomLoc()
+|               |- def satSelection()
+|               |- def footprint()
+|   
+|   |-- simulator.py
+|           class Simulator:
+|               parameters: B, freqs, Ns, Nu, L, Network, nIter, antSpacing
+|               |- def run()
+|               |- def plot()
+|               |- def save()
+|
+|   |-- optimizer.py
+|        class Optimizer:
+|           |- def run()
+|               |- 'fractionalProgramming': Has "max_iter" variable that controls convergence
+|
+|   |-- helper.py
+|       class Helper:
+|           |- def arrayResponse()
+|           |- def getDistance()
+|           |- def pathLoss()
+|           |- def ecef_to_geodetic()
+|           |- def azimuth_elevation_from_sat()
+|           |- def channelAndPrecoder()
+|           |- def getSINR()
+|           |- def spin2Frequency()
+|           |- def twoWaySumRate()
+|
+|
+|-- main.py
+|-- readme.txt
+
+
+
