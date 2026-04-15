@@ -24,7 +24,8 @@ Networks", 2026 IEEE International Conference on Communications Workshops (ICC
 Workshops), Glasgow, UK.*  
 
 ## Bibtex
-@INPROCEEDINGS{Mukh2605:Dynamic,
+
+*@INPROCEEDINGS{Mukh2605:Dynamic,
 AUTHOR="Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski",
 TITLE="Dynamic {Downlink-Uplink} for Spectrum Sharing in {Non-Terrestrial}
 Networks",
@@ -56,7 +57,7 @@ industrial-grade mixed integer solvers.
 We show numerical results for simple setup to demonstrate the effectiveness
 of the the proposed approach over conventional FDD, achieving up to 94\\%
 improvement in throughput in dense deployments."
-}
+}*
 ---
 
 ## Requirements
