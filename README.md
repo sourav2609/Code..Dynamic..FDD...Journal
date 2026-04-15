@@ -1,4 +1,4 @@
-# Spinning Frequency Bands
+# Code for Dynamic Downlink-Uplink for Spectrum Sharing in Non-Terrestrial Networks and Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks
 
 ## Author
 
