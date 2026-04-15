@@ -13,14 +13,50 @@ D-28359 Bremen, Germany
 
 ---
 ### License
-If you use the code in any way, please cite the original paper. 
+If you use the code in any way, please cite the original paper.
 
 ---
 
 ## Paper
 
-**Title**: *Spinning Bands for LEO Satellites: Interference Mitigation Through Dynamic Downlink-Uplink Band Allocation*  
+**Title**: *Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski, "Dynamic Downlink-Uplink for Spectrum Sharing in Non-Terrestrial
+Networks", 2026 IEEE International Conference on Communications Workshops (ICC
+Workshops), Glasgow, UK.*  
 
+## Bibtex
+@INPROCEEDINGS{Mukh2605:Dynamic,
+AUTHOR="Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski",
+TITLE="Dynamic {Downlink-Uplink} for Spectrum Sharing in {Non-Terrestrial}
+Networks",
+BOOKTITLE="2026 IEEE International Conference on Communications Workshops (ICC
+Workshops): WS-29: 6th Satellite Mega-Constellations in the 6G Era
+(6GSatComNet'26) (ICC 2026 WS-29 - 6GSatComNet)",
+ADDRESS="Glasgow, United Kingdom (Great Britain)",
+PAGES=6,
+DAYS=23,
+MONTH=may,
+YEAR=2026,
+ABSTRACT="6G networks are expected to integrate low Earth orbit satellites to ensure
+global connectivity by extending coverage to underserved and remote
+regions.
+However, the deployment of dense mega-constellations introduces severe
+interference among satellites operating over shared frequency bands.
+This is, in part, due to the limited flexibility of conventional frequency
+division duplex (FDD) systems, where fixed bands for downlink (DL) and
+uplink (UL) transmissions are employed.
+In this work, we propose dynamic re-assignment of FDD bands for improved
+interference management in dense deployments and evaluate the performance
+gain of this approach.
+To this end, we formulate a joint optimization problem that incorporates
+dynamic band assignment, user scheduling, and power allocation in both
+directions.
+This non-convex mixed integer problem is solved using a combination of
+equivalence transforms, alternating optimization, and state-of-the-art
+industrial-grade mixed integer solvers.
+We show numerical results for simple setup to demonstrate the effectiveness
+of the the proposed approach over conventional FDD, achieving up to 94\\%
+improvement in throughput in dense deployments."
+}
 ---
 
 ## Requirements
