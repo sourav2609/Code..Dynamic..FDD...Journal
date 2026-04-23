@@ -1,4 +1,4 @@
-# Code for Dynamic Downlink-Uplink for Spectrum Sharing in Non-Terrestrial Networks
+# Spinning Frequency Bands
 
 ## Author
 
@@ -13,20 +13,13 @@ D-28359 Bremen, Germany
 
 ---
 ### License
-If you use the code in any way, please cite the original paper. The code is used for both the conference paper and the journal version.
+If you use the code in any way, please cite the original paper. 
 
 ---
 
-## Papers
+## Paper
 
-**Conference ICC 2026**: *Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski, "Dynamic Downlink-Uplink for Spectrum Sharing in Non-Terrestrial Networks", 2026 IEEE International Conference on Communications Workshops (ICC Workshops), Glasgow, UK.*  
-**Journal \[Submitted\] 2026**: *Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski, "Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks", Under review \[Submitted\].*  
-
-## Bibtex
-
-**Conference ICC 2026**: *@INPROCEEDINGS{Mukh2605:Dynamic, AUTHOR="Sourav Mukherjee and Bho Matthiesen and Armin Dekorsy and Petar Popovski", TITLE="Dynamic {Downlink-Uplink} for Spectrum Sharing in {Non-Terrestrial} Networks", BOOKTITLE="2026 IEEE International Conference on Communications Workshops (ICC Workshops): WS-29: 6th Satellite Mega-Constellations in the 6G Era (6GSatComNet'26) (ICC 2026 WS-29 - 6GSatComNet)", ADDRESS="Glasgow, United Kingdom (Great Britain)", PAGES=6, DAYS=23, MONTH=may, YEAR=2026}*
-
-**Journal \[Submitted\] 2026**: 
+**Title**: *Spinning Bands for LEO Satellites: Interference Mitigation Through Dynamic Downlink-Uplink Band Allocation*  
 
 ---
 
@@ -171,10 +164,24 @@ If you open the file during execution, you can see:
 - `completed_iterations`
 - `target_iterations`
 - `iteration_results`
+- `result_case_order`
+- `results_by_case`
 - `results_with_spin`
 - `results_without_spin`
 
 So if a run fails midway, the file still shows how many iterations were already completed and their values.
+
+The main `f_0` series saved for each chunk are:
+
+- `bestSolution_wspin`: `max(solutions)`
+- `bestSolution_spin0`: `solutions[0]`
+- `bestSolution_spin1`: `solutions[-1]`
+- `bestSolution_randSpin`: random choice between `solutions[0]` and `solutions[-1]`
+
+For backward compatibility, the chunk files also keep:
+
+- `results_with_spin` as an alias of `bestSolution_wspin`
+- `results_without_spin` as an alias of `bestSolution_randSpin`
 
 ### Runtime Satellite Instances
 
@@ -193,11 +200,15 @@ Data/experiments/J_XX_K_YYY/merged/results.json
 Data/experiments/J_XX_K_YYY/merged/cdf_merged.eps
 ```
 
+The merged JSON stores the same four `f_0` cases inside `results_by_case`, and the merged CDF plot shows all available cases.
+
 The overall summary across configurations is stored in:
 
 ```text
 Data/experiments/summary.csv
 ```
+
+`summary.csv` includes mean and max columns for each saved case.
 
 ## Where Job Files And Logs Are Stored
 

@@ -5,6 +5,19 @@ import numpy as np
 
 
 class Simulator:
+    CASE_ORDER = (
+        "bestSolution_wspin",
+        "bestSolution_spin0",
+        "bestSolution_spin1",
+        "bestSolution_randSpin",
+    )
+    PLOT_STYLES = {
+        "bestSolution_wspin": ("Best Over All Spins", "blue"),
+        "bestSolution_spin0": ("All-Zero Spin", "red"),
+        "bestSolution_spin1": ("All-One Spin", "green"),
+        "bestSolution_randSpin": ("Random Spin-0/1", "orange"),
+    }
+
     def __init__(
         self,
         net,
@@ -30,8 +43,7 @@ class Simulator:
         self.ueMaxPow = ueMaxPow
         self.antSpacing = antSpacing
         self.nIter = nIter
-        self.results_with_spin = []
-        self.results_without_spin = []
+        self.results_by_case = {case_name: [] for case_name in self.CASE_ORDER}
         self.iteration_results = []
         self.outfile = outfile
         self.layout_callback = layout_callback
@@ -46,8 +58,7 @@ class Simulator:
         tmp_path.replace(filename)
 
     def run(self, checkpoint_file=None, metadata=None, plot_file=None):
-        self.results_with_spin = []
-        self.results_without_spin = []
+        self.results_by_case = {case_name: [] for case_name in self.CASE_ORDER}
         self.iteration_results = []
         checkpoint_path = Path(checkpoint_file) if checkpoint_file is not None else None
         plot_path = Path(plot_file) if plot_file is not None else None
@@ -62,7 +73,7 @@ class Simulator:
                     self.Ns, self.Nu, self.satMaxPow, self.ueMaxPow, self.outfile
                 )
 
-                sum_rate1, sum_rate2 = self.optimizer.run(
+                case_results = self.optimizer.run(
                     self.network.satellites,
                     self.network.ues,
                     self.freqs,
@@ -70,15 +81,15 @@ class Simulator:
                     self.network.time,
                     self.antSpacing,
                 )
-                self.results_with_spin.append(float(sum_rate1))
-                self.results_without_spin.append(float(sum_rate2))
-                self.iteration_results.append(
-                    {
-                        "iteration": i + 1,
-                        "with_spin": float(sum_rate1),
-                        "without_spin": float(sum_rate2),
-                    }
-                )
+
+                iteration_payload = {"iteration": i + 1}
+                for case_name in self.CASE_ORDER:
+                    case_value = float(case_results[case_name])
+                    self.results_by_case[case_name].append(case_value)
+                    iteration_payload[case_name] = case_value
+                iteration_payload["with_spin"] = iteration_payload["bestSolution_wspin"]
+                iteration_payload["without_spin"] = iteration_payload["bestSolution_randSpin"]
+                self.iteration_results.append(iteration_payload)
 
                 if checkpoint_path is not None:
                     self.save(
@@ -87,20 +98,27 @@ class Simulator:
                         completed_iterations=i + 1,
                         status="running" if (i + 1) < self.nIter else "completed",
                     )
-                if plot_path is not None and self.results_with_spin and self.results_without_spin:
+                if plot_path is not None and self._has_results():
                     self.plot(plot_path)
         except Exception as exc:
             if checkpoint_path is not None:
                 self.save(
                     checkpoint_path,
                     metadata=metadata,
-                    completed_iterations=len(self.results_with_spin),
+                    completed_iterations=self.completed_iterations,
                     status="failed",
                     error_message=str(exc),
                 )
             raise
 
-        return self.results_with_spin, self.results_without_spin
+        return {case_name: list(values) for case_name, values in self.results_by_case.items()}
+
+    @property
+    def completed_iterations(self):
+        return len(self.iteration_results)
+
+    def _has_results(self):
+        return any(self.results_by_case[case_name] for case_name in self.CASE_ORDER)
 
     def save(
         self,
@@ -114,38 +132,42 @@ class Simulator:
             "metadata": metadata or {},
             "status": status,
             "completed_iterations": (
-                len(self.results_with_spin)
+                self.completed_iterations
                 if completed_iterations is None
                 else int(completed_iterations)
             ),
             "target_iterations": int(self.nIter),
+            "result_case_order": list(self.CASE_ORDER),
             "iteration_results": list(self.iteration_results),
-            "results_with_spin": list(self.results_with_spin),
-            "results_without_spin": list(self.results_without_spin),
+            "results_by_case": {
+                case_name: list(self.results_by_case[case_name]) for case_name in self.CASE_ORDER
+            },
+            "results_with_spin": list(self.results_by_case["bestSolution_wspin"]),
+            "results_without_spin": list(self.results_by_case["bestSolution_randSpin"]),
         }
         if error_message is not None:
             payload["error_message"] = error_message
         self._write_json_atomic(filename, payload)
 
     def plot(self, output_path):
-        if not self.results_with_spin or not self.results_without_spin:
+        if not self._has_results():
             raise ValueError("No simulation results available to plot.")
 
         import matplotlib.pyplot as plt
-
-        sorted_spin = np.sort(self.results_with_spin)
-        sorted_no_spin = np.sort(self.results_without_spin)
-
-        cdf_spin = np.arange(1, len(sorted_spin) + 1) / len(sorted_spin)
-        cdf_no_spin = np.arange(1, len(sorted_no_spin) + 1) / len(sorted_no_spin)
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         fmt = output_path.suffix.lstrip(".") or None
 
         plt.figure(figsize=(8, 6))
-        plt.plot(sorted_spin, cdf_spin, label="With Spin", color="blue")
-        plt.plot(sorted_no_spin, cdf_no_spin, label="Without Spin", color="red")
+        for case_name in self.CASE_ORDER:
+            case_values = self.results_by_case[case_name]
+            if not case_values:
+                continue
+            sorted_values = np.sort(case_values)
+            cdf_values = np.arange(1, len(sorted_values) + 1) / len(sorted_values)
+            label, color = self.PLOT_STYLES[case_name]
+            plt.plot(sorted_values, cdf_values, label=label, color=color)
         plt.xlabel("Sum Rate")
         plt.ylabel("CDF")
         plt.grid(True)

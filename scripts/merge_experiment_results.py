@@ -8,6 +8,20 @@ from pathlib import Path
 import numpy as np
 
 
+CASE_ORDER = (
+    "bestSolution_wspin",
+    "bestSolution_spin0",
+    "bestSolution_spin1",
+    "bestSolution_randSpin",
+)
+CASE_PLOT_STYLES = {
+    "bestSolution_wspin": ("Best Over All Spins", "blue"),
+    "bestSolution_spin0": ("All-Zero Spin", "red"),
+    "bestSolution_spin1": ("All-One Spin", "green"),
+    "bestSolution_randSpin": ("Random Spin-0/1", "orange"),
+}
+
+
 def build_parser():
     parser = argparse.ArgumentParser(
         description="Merge chunked experiment JSON files and generate per-configuration summaries."
@@ -32,20 +46,37 @@ def build_parser():
     return parser
 
 
-def plot_results(results_with_spin, results_without_spin, output_path):
-    import matplotlib.pyplot as plt
+def extract_case_results(payload):
+    if "results_by_case" in payload:
+        results_by_case = payload["results_by_case"]
+        return {
+            case_name: list(results_by_case.get(case_name, [])) for case_name in CASE_ORDER
+        }
 
-    sorted_spin = np.sort(results_with_spin)
-    sorted_no_spin = np.sort(results_without_spin)
-    cdf_spin = np.arange(1, len(sorted_spin) + 1) / len(sorted_spin)
-    cdf_no_spin = np.arange(1, len(sorted_no_spin) + 1) / len(sorted_no_spin)
+    # Backward compatibility for older two-series chunk files.
+    return {
+        "bestSolution_wspin": list(payload.get("results_with_spin", [])),
+        "bestSolution_spin0": [],
+        "bestSolution_spin1": [],
+        "bestSolution_randSpin": list(payload.get("results_without_spin", [])),
+    }
+
+
+def plot_results(results_by_case, output_path):
+    import matplotlib.pyplot as plt
 
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(8, 6))
-    plt.plot(sorted_spin, cdf_spin, label="With Spin", color="blue")
-    plt.plot(sorted_no_spin, cdf_no_spin, label="Without Spin", color="red")
+    for case_name in CASE_ORDER:
+        case_values = results_by_case.get(case_name, [])
+        if not case_values:
+            continue
+        sorted_values = np.sort(case_values)
+        cdf_values = np.arange(1, len(sorted_values) + 1) / len(sorted_values)
+        label, color = CASE_PLOT_STYLES[case_name]
+        plt.plot(sorted_values, cdf_values, label=label, color=color)
     plt.xlabel("Sum Rate")
     plt.ylabel("CDF")
     plt.grid(True)
@@ -71,48 +102,57 @@ def main():
         if not chunk_files:
             continue
 
-        merged_with_spin = []
-        merged_without_spin = []
+        merged_results_by_case = {case_name: [] for case_name in CASE_ORDER}
         chunk_metadata = []
 
         for chunk_file in chunk_files:
             payload = json.loads(chunk_file.read_text())
-            merged_with_spin.extend(payload.get("results_with_spin", []))
-            merged_without_spin.extend(payload.get("results_without_spin", []))
+            chunk_results_by_case = extract_case_results(payload)
+            for case_name in CASE_ORDER:
+                merged_results_by_case[case_name].extend(chunk_results_by_case[case_name])
             chunk_metadata.append(payload.get("metadata", {}))
 
         merged_dir = config_dir / "merged"
         merged_dir.mkdir(parents=True, exist_ok=True)
 
+        num_results = max(
+            (len(merged_results_by_case[case_name]) for case_name in CASE_ORDER),
+            default=0,
+        )
+
         merged_payload = {
             "config": chunk_metadata[0] if chunk_metadata else {},
             "numChunks": len(chunk_files),
-            "numResults": len(merged_with_spin),
+            "numResults": num_results,
             "chunkFiles": [str(path) for path in chunk_files],
-            "results_with_spin": merged_with_spin,
-            "results_without_spin": merged_without_spin,
+            "result_case_order": list(CASE_ORDER),
+            "results_by_case": merged_results_by_case,
+            "results_with_spin": merged_results_by_case["bestSolution_wspin"],
+            "results_without_spin": merged_results_by_case["bestSolution_randSpin"],
         }
         merged_file = merged_dir / "results.json"
         merged_file.write_text(json.dumps(merged_payload, indent=2) + "\n")
 
-        if merged_with_spin and merged_without_spin:
-            summary_rows.append(
-                {
-                    "config": config_dir.name,
-                    "num_chunks": len(chunk_files),
-                    "num_results": len(merged_with_spin),
-                    "mean_with_spin": float(np.mean(merged_with_spin)),
-                    "mean_without_spin": float(np.mean(merged_without_spin)),
-                    "max_with_spin": float(np.max(merged_with_spin)),
-                    "max_without_spin": float(np.max(merged_without_spin)),
-                    "merged_file": str(merged_file),
-                }
-            )
+        if any(merged_results_by_case[case_name] for case_name in CASE_ORDER):
+            summary_row = {
+                "config": config_dir.name,
+                "num_chunks": len(chunk_files),
+                "num_results": num_results,
+                "merged_file": str(merged_file),
+            }
+            for case_name in CASE_ORDER:
+                case_values = merged_results_by_case[case_name]
+                summary_row[f"mean_{case_name}"] = (
+                    float(np.mean(case_values)) if case_values else None
+                )
+                summary_row[f"max_{case_name}"] = (
+                    float(np.max(case_values)) if case_values else None
+                )
+            summary_rows.append(summary_row)
 
             if not args.skip_plots:
                 plot_results(
-                    merged_with_spin,
-                    merged_without_spin,
+                    merged_results_by_case,
                     merged_dir / f"cdf_merged.{args.plot_format}",
                 )
 

@@ -198,6 +198,16 @@ class Optimizer:
 
             solutions.append(f_0)
 
-        bestSolution_wOspin = solutions[0] if random.random() < 0.5 else solutions[-1]
-        bestSolution_wspin = max(solutions)
-        return bestSolution_wspin, bestSolution_wOspin
+        bestSolution_spin0 = float(solutions[0])
+        bestSolution_spin1 = float(solutions[-1])
+        bestSolution_randSpin = (
+            bestSolution_spin0 if random.random() < 0.5 else bestSolution_spin1
+        )
+        bestSolution_wspin = float(max(solutions))
+
+        return {
+            "bestSolution_wspin": bestSolution_wspin,
+            "bestSolution_spin0": bestSolution_spin0,
+            "bestSolution_spin1": bestSolution_spin1,
+            "bestSolution_randSpin": float(bestSolution_randSpin),
+        }

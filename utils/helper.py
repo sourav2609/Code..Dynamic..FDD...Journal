@@ -137,7 +137,8 @@ class Helper:
 
         wavelength = (3 * 10**8) / freq
         az, el = self.azimuth_elevation_from_sat(pos1, pos2)
-        v = self.arrayResponse(obj1.numAnt[0], obj1.numAnt[1], antSpacing, wavelength, az, el)
+        ant_spacing = self._spacing_for_frequency(antSpacing, freq)
+        v = self.arrayResponse(obj1.numAnt[0], obj1.numAnt[1], ant_spacing, wavelength, az, el)
         channel = np.sqrt(obj1.numAnt[0] * obj1.numAnt[1] * self.pathLoss(freq, distance)) * v
         precoder = np.conj(v)
         return channel, precoder
@@ -145,12 +146,30 @@ class Helper:
     def _time_key(self, t):
         return float(np.asarray(t.tt).reshape(-1)[0])
 
+    def _spacing_for_frequency(self, antSpacing, freq):
+        ant_spacings = np.asarray(antSpacing, dtype=float).reshape(-1)
+        if ant_spacings.size == 1:
+            return float(ant_spacings[0])
+        half_wavelength = (3 * 10**8) / (2 * freq)
+        return float(ant_spacings[np.argmin(np.abs(ant_spacings - half_wavelength))])
+
+    def _normalize_ant_spacings(self, antSpacing, num_bands):
+        ant_spacings = np.asarray(antSpacing, dtype=float).reshape(-1)
+        if ant_spacings.size == 1:
+            ant_spacings = np.repeat(ant_spacings, num_bands)
+        elif ant_spacings.size != num_bands:
+            raise ValueError(
+                f"Expected 1 or {num_bands} antenna spacing values, got {ant_spacings.size}."
+            )
+        return tuple(float(value) for value in ant_spacings.tolist())
+
     def _base_cache_signature(self, satellites, UEs, L, antSpacing, t):
+        ant_spacings = self._normalize_ant_spacings(antSpacing, len(L))
         return (
             tuple(id(sat) for sat in satellites),
             tuple(id(ue) for ue in UEs),
             tuple(float(freq) for freq in L),
-            float(antSpacing),
+            ant_spacings,
             self._time_key(t),
         )
 
@@ -161,6 +180,7 @@ class Helper:
         base_key = self._base_cache_signature(satellites, UEs, L, antSpacing, t)
         if self._base_cache_key == base_key and self._base_cache is not None:
             return self._base_cache
+        ant_spacings = base_key[3]
 
         J = len(satellites)
         K = len(UEs)
@@ -180,7 +200,7 @@ class Helper:
                 for l_idx, freq in enumerate(L):
                     wavelength = (3 * 10**8) / freq
                     v = self.arrayResponse(
-                        sat.numAnt[0], sat.numAnt[1], antSpacing, wavelength, az, el
+                        sat.numAnt[0], sat.numAnt[1], ant_spacings[l_idx], wavelength, az, el
                     ).reshape(-1)
                     scale = np.sqrt(
                         sat.numAnt[0] * sat.numAnt[1] * self.pathLoss(freq, distance)

@@ -127,7 +127,7 @@ def run_simulation(args):
     ts = load.timescale()
     start_time = ts.utc(args.start_year, args.start_month, args.start_day)
     central_loc = wgs84.latlon(args.central_lat, args.central_lon)
-    ant_spacing = 3e8 / (2 * ((args.freqs[0] + args.freqs[1]) / 2))
+    ant_spacing = tuple(3e8 / (2 * freq) for freq in args.freqs)
 
     config_dir = config_directory(args.output_root, args.num_sat, args.num_ue)
     chunk_dir = config_dir / "chunks"
