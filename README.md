@@ -1,4 +1,4 @@
-# Spinning Frequency Bands
+# Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks
 
 ## Author
 
@@ -19,14 +19,14 @@ If you use the code in any way, please cite the original paper.
 
 ## Paper
 
-**Title**: *Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks*
-**Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski*
+**Title**: *Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks* \\
+**Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski*\\
 **ArXiv**: 
 
 ## Conference Version
-**Title**: *Dynamic Downlink-Uplink Spectrum Sharing in Non-Terrestrial Networks*
-**Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski*
-**ArXiv**: *https://arxiv.org/abs/2511.08188*
+**Title**: *Dynamic Downlink-Uplink Spectrum Sharing in Non-Terrestrial Networks*\\
+**Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski*\\
+**ArXiv**: *https://arxiv.org/abs/2511.08188*\\
 **Published**: *in IEEE Proeceedings of International Conference on Communications (ICC) 2026, Glasgow, UK*
 
 ---
