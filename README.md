@@ -17,8 +17,9 @@ If you use the code in any way, please cite the original paper.
 
 ---
 
-## Paper
+## Papers
 
+## Journal Version
 **Title**: *Dynamic FDD for Spectrum Sharing in Non-Terrestrial Networks* <br>
 **Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski* <br>
 **ArXiv**: 
