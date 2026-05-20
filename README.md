@@ -15,7 +15,7 @@ D-28359 Bremen, Germany
 ### License
 If you use the code in any way, please cite the original papers and the code.<br>
 The code is citable using the following DOI: 
-
+[![DOI](https://zenodo.org/badge/1192100479.svg)](https://doi.org/10.5281/zenodo.20307457)
 ---
 
 ## Papers
