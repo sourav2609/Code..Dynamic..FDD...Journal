@@ -13,7 +13,7 @@ D-28359 Bremen, Germany
 
 ---
 ### License
-If you use the code in any way, please cite the original papers and the code.
+If you use the code in any way, please cite the original papers and the code.<br>
 The code is citable using the following DOI: 
 
 ---
@@ -29,7 +29,7 @@ The code is citable using the following DOI:
 **Title**: *Dynamic Downlink-Uplink Spectrum Sharing in Non-Terrestrial Networks*<br>
 **Authors**: *Sourav Mukherjee, Bho Matthiesen, Armin Dekorsy, Petar Popovski*<br>
 **ArXiv**: *https://arxiv.org/abs/2511.08188*<br>
-**Published**: *in IEEE Proeceedings of International Conference on Communications Workshops (ICC Workshops) 2026, Glasgow, UK*
+**Published**: *in IEEE Proceedings of International Conference on Communications Workshops (ICC Workshops) 2026, Glasgow, UK*
 
 ---
 
