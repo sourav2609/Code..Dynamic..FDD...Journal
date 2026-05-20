@@ -13,7 +13,8 @@ D-28359 Bremen, Germany
 
 ---
 ### License
-If you use the code in any way, please cite the original paper. 
+If you use the code in any way, please cite the original papers and the code.
+The code is citable using the following DOI: 
 
 ---
 
